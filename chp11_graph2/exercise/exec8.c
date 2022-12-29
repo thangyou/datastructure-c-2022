@@ -1,3 +1,6 @@
+/*
+    ìµœë‹¨ ê²½ë¡œ í•¨ìˆ˜(Dijkstra)ë¥¼ ìµœë‹¨ ê²½ë¡œì˜ ê¸¸ì´ ë¿ë§Œ ì•„ë‹ˆë¼ ê·¸ ê²½ë¡œê¹Œì§€ ì¶œë ¥
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -5,15 +8,15 @@
 #define TRUE 1
 #define FALSE 0
 #define MAX_VERTICES	100	
-#define INF	1000000	/* ¹«ÇÑ´ë (¿¬°áÀÌ ¾ø´Â °æ¿ì) */
+#define INF	1000000	/* ë¬´í•œëŒ€ (ì—°ê²°ì´ ì—†ëŠ” ê²½ìš°) */
 
 typedef struct GraphType {
-	int n;	// Á¤Á¡ÀÇ °³¼ö
+	int n;	// ì •ì ì˜ ê°œìˆ˜
 	int weight[MAX_VERTICES][MAX_VERTICES];
 } GraphType;
 
-int distance[MAX_VERTICES];/* ½ÃÀÛÁ¤Á¡À¸·ÎºÎÅÍÀÇ ÃÖ´Ü°æ·Î °Å¸® */
-int found[MAX_VERTICES];		/* ¹æ¹®ÇÑ Á¤Á¡ Ç¥½Ã */
+int distance[MAX_VERTICES];/* ì‹œì‘ì •ì ìœ¼ë¡œë¶€í„°ì˜ ìµœë‹¨ê²½ë¡œ ê±°ë¦¬ */
+int found[MAX_VERTICES];		/* ë°©ë¬¸í•œ ì •ì  í‘œì‹œ */
 								
 int choose(int distance[], int n, int found[])
 {
@@ -27,6 +30,7 @@ int choose(int distance[], int n, int found[])
 		}
 	return minpos;
 }
+
 void print_status(GraphType* g)
 {
 	static int step=1;
@@ -44,16 +48,16 @@ void print_status(GraphType* g)
 		printf("%2d ", found[i]);
 	printf("\n\n");
 }
-//
+
 void shortest_path(GraphType* g, int start)
 {
-	int i, u, w;
-	for (i = 0; i<g->n; i++) /* ÃÊ±âÈ­ */
+	int i, u = start, w;
+	for (i = 0; i<g->n; i++) /* ì´ˆê¸°í™” */
 	{
 		distance[i] = g->weight[start][i];
 		found[i] = FALSE;
 	}
-	found[start] = TRUE;    /* ½ÃÀÛ Á¤Á¡ ¹æ¹® Ç¥½Ã */
+	found[start] = TRUE;    /* ì‹œì‘ ì •ì  ë°©ë¬¸ í‘œì‹œ */
 	distance[start] = 0;
 	for (i = 0; i<g->n-1; i++) {
 		print_status(g);
@@ -70,13 +74,14 @@ void shortest_path(GraphType* g, int start)
 
 int main(void)
 {
-	GraphType g = { 6,
-    {{  0,  40,   45,   15,  INF,  INF },
-    { 40,   0,   20,   15,  20,    INF },
-    { 45,  20,   0,  INF,   33,  40 },
-    { 15,   15,  INF,   0,   40,  INF },
-    { INF,   20,   33, 40,    0,  3 },
-    { INF,  INF,  40,  INF,  3,    0 }}
+	GraphType g = { 7,
+	{{ 0,  7,  INF, INF,   3,  10, INF },
+	{ 7,  0,    4,  10,   2,   6, INF },
+	{ INF,  4,    0,   2, INF, INF, INF },
+	{ INF, 10,    2,   0,  11,   9,   4 },
+	{ 3,  2,  INF,  11,   0, INF,   5 },
+	{ 10,  6,  INF,   9, INF,   0, INF },
+	{ INF, INF, INF,   4,   5, INF,   0 } }
 	};
 	shortest_path(&g, 0);
 	return 0;
